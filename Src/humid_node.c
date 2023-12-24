@@ -20,7 +20,11 @@ HumidNode newHumidNode() {
 
 void HumidNode_readMoistureSensor(HumidNode* _HumidNode) {
     logMessage("readMoistureSensor");
+    HAL_ADC_Start(_HumidNode->adc);
+    HAL_ADC_PollForConversion(_HumidNode->adc, HAL_MAX_DELAY);
     _HumidNode->moistureData = HAL_ADC_GetValue(_HumidNode->adc);
+    HAL_ADC_Stop(_HumidNode->adc);
+
     sprintf(_HumidNode->messageBuffer, "Moisture Analog Value: %d", _HumidNode->moistureData);
     logMessage(_HumidNode->messageBuffer);
 }
